@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -18,11 +19,11 @@ public class GridManager : MonoBehaviour
     }
     void GenerateGrid()
     {
-        for (int x = 0; x < _width; x++)
+        for (int x = 0; x < _width; x += 1)
         {
-            for (int y = 0; y < _height; y++)
+            for (int y = 0; y < _height; y += 1)
             {
-                var spawnedTile = Instantiate(tilePrefab, new Vector3(x, y), Quaternion.identity);
+                var spawnedTile = Instantiate(tilePrefab, GetGridPosition(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
 
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
@@ -32,5 +33,9 @@ public class GridManager : MonoBehaviour
 
 
         mainCamera.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
+    }
+    public Vector3 GetGridPosition(int x, int y)
+    {
+        return new Vector3(y % 2 == 0 ? x : x + 0.5f, y, 0);
     }
 }
