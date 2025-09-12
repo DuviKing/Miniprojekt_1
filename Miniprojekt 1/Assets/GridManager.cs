@@ -31,11 +31,11 @@ public class GridManager : MonoBehaviour
             }
         }
 
-
+        //Flytter kameraet ind i midten af skærmen
         mainCamera.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
     }
-    public Vector3 GetGridPosition(int x, int y)
+    public Vector3 GetGridPosition(int x, int y) //Beregner hexagon positionen ud fra et firkantet koordinatsystem
     {
-        return new Vector3(y % 2 == 0 ? x : x + 0.5f, y, 0);
+        return new Vector3(y % 2 == 0 ? x : x + 0.5f, y % 2 == 0 ? y - 0.25f * y : y - 0.25f * y, 0);
     }
 }
