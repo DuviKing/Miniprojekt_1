@@ -1,11 +1,14 @@
+using System;
 using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private int _width, _height;
+    [SerializeField] private int gridSizeRadius;
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private Transform mainCamera;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,23 +20,24 @@ public class GridManager : MonoBehaviour
     {
 
     }
+
     void GenerateGrid()
     {
-        for (int x = 0; x < _width; x += 1)
+        for (int x = -(gridSizeRadius - 1); x <= (gridSizeRadius - 1); x += 1)
         {
-            for (int y = 0; y < _height; y += 1)
+            for (int y = -gridSizeRadius; y <= gridSizeRadius; y += 1) //Loop'er gennem alle heltalskoordinater
             {
+                    //Spawner et tile på alle heltals x- og y-koordinater
                 var spawnedTile = Instantiate(tilePrefab, GetGridPosition(x, y), Quaternion.identity);
-                spawnedTile.name = $"Tile {x} {y}";
+                    spawnedTile.name = $"Tile {x} {y}";
 
-                var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                spawnedTile.Init(isOffset);
+                    //Farver hver andet tile
+                    var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
+                    spawnedTile.Init(isOffset);
             }
         }
-
-        //Flytter kameraet ind i midten af skærmen
-        mainCamera.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
     }
+
     public Vector3 GetGridPosition(int x, int y) //Beregner hexagon positionen ud fra et firkantet koordinatsystem
     {
         return new Vector3(y % 2 == 0 ? x : x + 0.5f, y % 2 == 0 ? y - 0.25f * y : y - 0.25f * y, 0);
