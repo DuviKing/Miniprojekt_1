@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -5,9 +6,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color baseColor, offsetColor, selectedColor;
     [SerializeField] private SpriteRenderer tileSprite;
     [SerializeField] private GameObject highlight;
-    private bool isSelected;
-    private bool activeHighlight = false;
-    public bool unitOnTile = false;
+    public bool activeHighlight = false;
+    public UnitScript OccupiedUnit { get; private set; }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,6 +22,17 @@ public class Tile : MonoBehaviour
     public void Init(bool isOffset)
     {
         tileSprite.color = isOffset ? offsetColor : baseColor;
+    }
+
+    public void PlaceUnit(UnitScript unit)
+    {
+        OccupiedUnit = unit;
+        unit.PlaceOnTile(this);
+    }
+
+    public void ClearUnit()
+    {
+        OccupiedUnit = null;
     }
 
     public void Select()

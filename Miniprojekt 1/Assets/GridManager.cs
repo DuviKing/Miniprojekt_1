@@ -9,13 +9,16 @@ public class GridManager : MonoBehaviour
     private float hexYOffsetMultiplier = 0.25f;
     [SerializeField] private int gridSizeRadius;
     [SerializeField] private Tile tilePrefab;
+    [SerializeField] private UnitScript unitPrefab;
     private Tile selectedTile;
+    private UnitScript selectedUnit;
     private Dictionary<Vector2, Tile> mapTiles;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         GenerateGrid();
+        
     }
 
     // Update is called once per frame
@@ -31,37 +34,48 @@ public class GridManager : MonoBehaviour
                 Tile clickedTile = hit.collider.GetComponent<Tile>();
                 if (clickedTile != null)
                 {
-                    if (clickedTile.unitOnTile == true)
-                    {
-                        HighlightTilesInRange(clickedTile.transform.position, 1);
-                    }
-                    else
-                    {
-                        SelectTile(clickedTile);
-                    }
+                    HandleTileClick(clickedTile);
+                }
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.A)) // A button
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                Tile clickedTile = hit.collider.GetComponent<Tile>();
+                if (clickedTile != null)
+                {
+                    var spawnedUnit = Instantiate(unitPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    clickedTile.PlaceUnit(spawnedUnit);
                 }
             }
         }
     }
 
-    private void SelectTile(Tile tile)
+    private void HandleTileClick(Tile tile)
     {
-        // Deselect forrige tile
-            if (selectedTile != null)
-            {
-                selectedTile.Deselect();
-            }
-        foreach (var kvp in mapTiles)
+        // Case 1: Selecting a unit
+        if (tile.OccupiedUnit != null && selectedUnit == null)
         {
-            Tile currentTile = kvp.Value;
-            currentTile.Deselect();
+            selectedUnit = tile.OccupiedUnit;
+            HighlightTilesInRange(GetTileGridPosition(selectedUnit.currentTile), selectedUnit.moveRange);
+            return;
         }
 
-        // Select ny tile
-        selectedTile = tile;
-        selectedTile.Select();
-
-        Debug.Log($"{tile.name} is now selected");
+        // Case 2: Selecting a destination within range
+        if (selectedUnit != null && tile.activeHighlight && tile.OccupiedUnit == null)
+        {
+            MoveUnitToTile(selectedUnit, tile);
+            ClearHighlights();
+            selectedUnit = null;
+        }
+    }
+    private void MoveUnitToTile(UnitScript unit, Tile tile)
+    {
+        tile.PlaceUnit(unit);
     }
 
     void GenerateGrid()
@@ -98,6 +112,16 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    private Vector2 GetTileGridPosition(Tile tile)
+    {
+        foreach (var kvp in mapTiles)
+        {
+            if (kvp.Value == tile)
+                return kvp.Key;
+        }
+        return Vector2.zero;
+    }
+
     public void HighlightTilesInRange(Vector2 center, int range)
     {
         foreach (var kvp in mapTiles)
@@ -110,13 +134,19 @@ public class GridManager : MonoBehaviour
 
             if (distance <= range)
             {
-                Debug.Log($"{tile.name}: {tilePos}");
                 tile.Select();
             }
             else
             {
                 tile.Deselect();
             }
+        }
+    }
+    public void ClearHighlights()
+    {
+        foreach (var kvp in mapTiles)
+        {
+            kvp.Value.Deselect();
         }
     }
 }
