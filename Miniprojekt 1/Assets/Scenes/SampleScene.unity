@@ -1531,7 +1531,7 @@ GameObject:
   - component: {fileID: 567678560}
   - component: {fileID: 567678559}
   m_Layer: 0
-  m_Name: damage indicator maneger
+  m_Name: Damage Indicator Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
