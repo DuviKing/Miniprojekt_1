@@ -8,6 +8,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject highlight;
     public bool activeHighlight = false;
     public UnitScript OccupiedUnit { get; private set; }
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,6 +34,17 @@ public class Tile : MonoBehaviour
     public void ClearUnit()
     {
         OccupiedUnit = null;
+    }
+
+    public void InitiateCombat(UnitScript attackingUnit)
+    {
+        OccupiedUnit.health = OccupiedUnit.health - attackingUnit.damage;
+        Debug.Log($"{OccupiedUnit.name} has {OccupiedUnit.health} health left");
+        if (OccupiedUnit.health <= 0)
+        {
+            Destroy(OccupiedUnit.gameObject);
+            Debug.Log($"{OccupiedUnit}");
+        }
     }
 
     public void Select()

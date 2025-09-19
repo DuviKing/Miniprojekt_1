@@ -103,5 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c951c70122bbfc04a9bb1c5105b7a5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  health: 160
+  damage: 80
   moveRange: 1
   currentTile: {fileID: 0}

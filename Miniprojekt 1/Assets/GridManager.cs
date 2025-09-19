@@ -34,11 +34,11 @@ public class GridManager : MonoBehaviour
                 Tile clickedTile = hit.collider.GetComponent<Tile>();
                 if (clickedTile != null)
                 {
-                    HandleTileClick(clickedTile);
+                    HandleMoveTileClick(clickedTile);
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.A)) // A button
+        if (Input.GetMouseButtonDown(1)) // right mouse click
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
@@ -48,14 +48,29 @@ public class GridManager : MonoBehaviour
                 Tile clickedTile = hit.collider.GetComponent<Tile>();
                 if (clickedTile != null)
                 {
-                    var spawnedUnit = Instantiate(unitPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                    clickedTile.PlaceUnit(spawnedUnit);
+                    HandleAttackTileClick(clickedTile);
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.A)) // 'A'-knap spawner en unit på feltet med musen over
+            {
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+                if (hit.collider != null)
+                {
+                    Tile clickedTile = hit.collider.GetComponent<Tile>();
+                    if (clickedTile != null)
+                    {
+                        var spawnedUnit = Instantiate(unitPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                        clickedTile.PlaceUnit(spawnedUnit);
+                    }
+                }
+            }
     }
 
-    private void HandleTileClick(Tile tile)
+    private void HandleMoveTileClick(Tile tile)
     {
         // Case 1: Selecting a unit
         if (tile.OccupiedUnit != null && selectedUnit == null)
@@ -72,7 +87,23 @@ public class GridManager : MonoBehaviour
             ClearHighlights();
             selectedUnit = null;
         }
+
+        //Case 3: Selecting a destination outside range
+        if (selectedUnit != null && tile.activeHighlight == false && tile.OccupiedUnit == null)
+        {
+            ClearHighlights();
+            selectedUnit = null;
+        }
     }
+
+    private void HandleAttackTileClick(Tile tile)
+    {
+        if (selectedUnit != null && tile.activeHighlight && tile.OccupiedUnit != null)
+        {
+            tile.InitiateCombat(selectedUnit);
+        }
+    }
+
     private void MoveUnitToTile(UnitScript unit, Tile tile)
     {
         tile.PlaceUnit(unit);

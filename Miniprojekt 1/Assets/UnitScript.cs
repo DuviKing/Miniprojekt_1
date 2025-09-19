@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class UnitScript : MonoBehaviour
 {
+    public int health;
+    public int damage;
     public int moveRange = 1; // how far this unit can move
     public Tile currentTile;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
