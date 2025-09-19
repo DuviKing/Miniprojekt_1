@@ -10,13 +10,18 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int gridSizeRadius;
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private UnitScript unitPrefab;
-    [SerializeField] private UnitScript squirePrefab;
-    [SerializeField] private UnitScript knightPrefab;
-    [SerializeField] private UnitScript shieldKnightPrefab;
-    [SerializeField] private UnitScript cavalryPrefab;
+    [SerializeField] private UnitScript squirePrefabTeam1;
+    [SerializeField] private UnitScript knightPrefabTeam1;
+    [SerializeField] private UnitScript shieldKnightPrefabTeam1;
+    [SerializeField] private UnitScript cavalryPrefabTeam1;
+    [SerializeField] private UnitScript squirePrefabTeam2;
+    [SerializeField] private UnitScript knightPrefabTeam2;
+    [SerializeField] private UnitScript shieldKnightPrefabTeam2;
+    [SerializeField] private UnitScript cavalryPrefabTeam2;
     private Tile selectedTile;
     private UnitScript selectedUnit;
     private Dictionary<Vector2, Tile> mapTiles;
+    private bool turnTeam1 = true; // true = team 1's turn, false = team 2's turn
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,6 +33,14 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space)) // skifter tur
+        {
+            turnTeam1 = !turnTeam1;
+            Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
+            ClearHighlights();
+            selectedUnit = null;
+        }
+
         if (Input.GetMouseButtonDown(0)) // left mouse click
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -38,7 +51,7 @@ public class GridManager : MonoBehaviour
                 Tile clickedTile = hit.collider.GetComponent<Tile>();
                 if (clickedTile != null)
                 {
-                    HandleMoveTileClick(clickedTile);
+                    HandleMoveTileClick(clickedTile); //Movement logic
                 }
             }
         }
@@ -52,7 +65,7 @@ public class GridManager : MonoBehaviour
                 Tile clickedTile = hit.collider.GetComponent<Tile>();
                 if (clickedTile != null)
                 {
-                    HandleAttackTileClick(clickedTile);
+                    HandleAttackTileClick(clickedTile); //Attack logic
                 }
             }
         }
@@ -75,19 +88,31 @@ public class GridManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            UnitSpawn(squirePrefab);
+            if (turnTeam1)
+                UnitSpawn(squirePrefabTeam1);
+            else
+                UnitSpawn(squirePrefabTeam2);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            UnitSpawn(knightPrefab);
+            if (turnTeam1)
+                UnitSpawn(knightPrefabTeam1);
+            else
+                UnitSpawn(knightPrefabTeam2);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            UnitSpawn(shieldKnightPrefab);
+            if (turnTeam1)
+                UnitSpawn(shieldKnightPrefabTeam1);
+            else
+                UnitSpawn(shieldKnightPrefabTeam2);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            UnitSpawn(cavalryPrefab);
+            if (turnTeam1)
+                UnitSpawn(cavalryPrefabTeam1);
+            else
+                UnitSpawn(cavalryPrefabTeam2);
         }
     }
 
