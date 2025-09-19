@@ -8,6 +8,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject highlight;
     public bool activeHighlight = false;
     public UnitScript OccupiedUnit { get; private set; }
+    public DamageIndicatorManager damageIndicatorManager; // reference to the damage indicator manager
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,6 +40,8 @@ public class Tile : MonoBehaviour
     public void InitiateCombat(UnitScript attackingUnit)
     {
         OccupiedUnit.health = OccupiedUnit.health - attackingUnit.damage;
+        Debug.Log($"{OccupiedUnit.transform.position}, {attackingUnit.damage}");
+        //damageIndicatorManager.SpawnDamageText(OccupiedUnit.transform.position, attackingUnit.damage.ToString());
         attackingUnit.actionPoints = 0; // sætter action points til 0 efter et angreb
         Debug.Log($"{OccupiedUnit.name} has {OccupiedUnit.health} health left");
         if (OccupiedUnit.health <= 0)
