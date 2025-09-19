@@ -105,11 +105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bf7c3c78f2cc248b51465577233eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  baseColor: {r: 0.17552699, g: 0.5690701, b: 0.78616345, a: 1}
-  offsetColor: {r: 0.17499295, g: 0.5165474, b: 0.70440245, a: 1}
+  baseColor: {r: 0.27450982, g: 0.27450982, b: 0.27450982, a: 0}
+  offsetColor: {r: 0.21568629, g: 0.21568629, b: 0.21568629, a: 0}
   selectedColor: {r: 0.17647056, g: 0.78431374, b: 0.19256231, a: 0}
   tileSprite: {fileID: 780744042799691463}
   highlight: {fileID: 7610226106284143265}
+  activeHighlight: 0
 --- !u!60 &6928448709491072703
 PolygonCollider2D:
   m_ObjectHideFlags: 0
