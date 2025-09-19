@@ -10,6 +10,10 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int gridSizeRadius;
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private UnitScript unitPrefab;
+    [SerializeField] private UnitScript squirePrefab;
+    [SerializeField] private UnitScript knightPrefab;
+    [SerializeField] private UnitScript shieldKnightPrefab;
+    [SerializeField] private UnitScript cavalryPrefab;
     private Tile selectedTile;
     private UnitScript selectedUnit;
     private Dictionary<Vector2, Tile> mapTiles;
@@ -68,6 +72,39 @@ public class GridManager : MonoBehaviour
                     }
                 }
             }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            UnitSpawn(squirePrefab);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            UnitSpawn(knightPrefab);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            UnitSpawn(shieldKnightPrefab);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            UnitSpawn(cavalryPrefab);
+        }
+    }
+
+    private void UnitSpawn(UnitScript unitType)
+    {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+        if (hit.collider != null)
+        {
+            Tile clickedTile = hit.collider.GetComponent<Tile>();
+            if (clickedTile != null)
+            {
+                var spawnedUnit = Instantiate(unitType, new Vector3(0, 0, 0), Quaternion.identity);
+                clickedTile.PlaceUnit(spawnedUnit);
+            }
+        }
     }
 
     private void HandleMoveTileClick(Tile tile)
