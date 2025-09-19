@@ -140,6 +140,9 @@ MonoBehaviour:
   damage: 80
   moveRange: 1
   currentTile: {fileID: 0}
+  actionPoints: 2
+  actionPointsMax: 2
+  unitTeam1: 1
 --- !u!1 &3212771016017678939
 GameObject:
   m_ObjectHideFlags: 0

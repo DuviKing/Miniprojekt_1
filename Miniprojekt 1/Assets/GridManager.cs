@@ -39,6 +39,7 @@ public class GridManager : MonoBehaviour
             Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
             ClearHighlights();
             selectedUnit = null;
+            AllUnitActionPointsReset();
         }
 
         if (Input.GetMouseButtonDown(0)) // left mouse click
@@ -137,9 +138,15 @@ public class GridManager : MonoBehaviour
         // Case 1: Selecting a unit
         if (tile.OccupiedUnit != null && selectedUnit == null)
         {
-            selectedUnit = tile.OccupiedUnit;
-            HighlightTilesInRange(GetTileGridPosition(selectedUnit.currentTile), selectedUnit.moveRange);
-            return;
+            if (tile.OccupiedUnit.unitTeam1 == turnTeam1 && tile.OccupiedUnit.actionPoints > 0) // tjekker om den valgte unit tilhører det hold, der har tur, og om den har action points tilbage
+            {
+                selectedUnit = tile.OccupiedUnit;
+                HighlightTilesInRange(GetTileGridPosition(selectedUnit.currentTile), selectedUnit.moveRange);
+            }
+            else
+            {
+                Debug.Log("Selected unit does not belong to the current team or has no action points left.");
+            }
         }
 
         // Case 2: Selecting a destination within range
@@ -162,13 +169,33 @@ public class GridManager : MonoBehaviour
     {
         if (selectedUnit != null && tile.activeHighlight && tile.OccupiedUnit != null)
         {
-            tile.InitiateCombat(selectedUnit);
+            if (selectedUnit.actionPoints > 0)
+            {
+                tile.InitiateCombat(selectedUnit);
+                selectedUnit = null;
+                ClearHighlights();
+            }
+            else
+            {
+                Debug.Log("Selected unit has no action points left to attack.");
+            }
         }
     }
 
     private void MoveUnitToTile(UnitScript unit, Tile tile)
     {
         tile.PlaceUnit(unit);
+    }
+    private void AllUnitActionPointsReset()
+    {
+        foreach (var kvp in mapTiles)
+        {
+            Tile tile = kvp.Value;
+            if (tile.OccupiedUnit != null)
+            {
+                tile.OccupiedUnit.actionPoints = tile.OccupiedUnit.actionPointsMax;
+            }
+        }
     }
 
     void GenerateGrid()

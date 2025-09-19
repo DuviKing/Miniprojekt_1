@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 4311260841563017872}
   - component: {fileID: 1528433401265327271}
   m_Layer: 0
-  m_Name: Knight team 1
+  m_Name: knight team 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -230,3 +230,6 @@ MonoBehaviour:
   damage: 120
   moveRange: 1
   currentTile: {fileID: 0}
+  actionPoints: 2
+  actionPointsMax: 2
+  unitTeam1: 1

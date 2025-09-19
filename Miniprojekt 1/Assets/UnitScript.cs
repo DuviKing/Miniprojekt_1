@@ -7,6 +7,8 @@ public class UnitScript : MonoBehaviour
     public int moveRange = 1; // how far this unit can move
     public Tile currentTile;
     public int actionPoints;
+    public int actionPointsMax;
+    public bool unitTeam1; // true for team 1, false for team 2
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,5 +30,6 @@ public class UnitScript : MonoBehaviour
         currentTile = tile;
         Debug.Log($"Unit is on {tile.name}");
         transform.position = tile.transform.position; // snap to tile
+        actionPoints = actionPoints - 1; // bruger en action point ved at flytte
     }
 }

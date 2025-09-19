@@ -39,6 +39,7 @@ public class Tile : MonoBehaviour
     public void InitiateCombat(UnitScript attackingUnit)
     {
         OccupiedUnit.health = OccupiedUnit.health - attackingUnit.damage;
+        attackingUnit.actionPoints = 0; // sætter action points til 0 efter et angreb
         Debug.Log($"{OccupiedUnit.name} has {OccupiedUnit.health} health left");
         if (OccupiedUnit.health <= 0)
         {
