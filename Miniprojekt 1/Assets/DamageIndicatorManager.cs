@@ -1,12 +1,16 @@
 using UnityEngine;
 //SpawnDamageText(combat position, damage amount as string)
-public class damgeIndicatorManeger : MonoBehaviour
+public class DamageIndicatorManager : MonoBehaviour
 {
+    void Update()
+    {
+        SpawnDamageText(new Vector3(0, 0, 0), "10");
+    }
     public GameObject damageTextPrefab; // Assign your prefab in the inspector
 
     public void SpawnDamageText(Vector3 position, string text)
     {
-        GameObject damageText = Instantiate(damageTextPrefab, position, Quaternion.identity);
+        var damageText = Instantiate(damageTextPrefab, position, Quaternion.identity);
         damageText.GetComponentInChildren<TextMesh>().text = text;
         StartCoroutine(MoveAndDestroy(damageText));
     }
