@@ -1,23 +1,33 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using TMPro; // needed for TMP_Text
+using TMPro;
 
-public class HoverText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class HoverText : MonoBehaviour
 {
-    private TMP_Text textComponent;
+    private TextMeshProUGUI hoverText;
+    private string originalText;
+    private Camera mainCamera;
 
-    void Awake()
+    private void Start()
     {
-        textComponent = GetComponent<TMP_Text>(); // get the text component on this object
+        mainCamera = Camera.main;
+        hoverText = GameObject.Find("unit name")?.GetComponent<TextMeshProUGUI>();
+
+        if (hoverText != null)
+            originalText = hoverText.text;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    void Update()
     {
-        textComponent.text = "Hovering: " + gameObject.name;
-    }
+        Vector2 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D hit = Physics2D.OverlapPoint(mousePos);
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        textComponent.text = "Not hovering";
+        if (hit != null && hit.gameObject == gameObject)
+        {
+            hoverText.text = gameObject.name;
+        }
+        else if (hoverText != null && hoverText.text == gameObject.name)
+        {
+            hoverText.text = originalText;
+        }
     }
 }
