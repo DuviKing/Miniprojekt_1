@@ -18,6 +18,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private UnitScript knightPrefabTeam2;
     [SerializeField] private UnitScript shieldKnightPrefabTeam2;
     [SerializeField] private UnitScript cavalryPrefabTeam2;
+    [SerializeField] private StatWindow StatWindow;
     private Tile selectedTile;
     private UnitScript selectedUnit;
     private Dictionary<Vector2, Tile> mapTiles;
@@ -141,6 +142,7 @@ public class GridManager : MonoBehaviour
             if (tile.OccupiedUnit.unitTeam1 == turnTeam1 && tile.OccupiedUnit.actionPoints > 0) // tjekker om den valgte unit tilhører det hold, der har tur, og om den har action points tilbage
             {
                 selectedUnit = tile.OccupiedUnit;
+                StatWindow.StatWindowText(selectedUnit);
                 HighlightTilesInRange(GetTileGridPosition(selectedUnit.currentTile), selectedUnit.moveRange);
             }
             else

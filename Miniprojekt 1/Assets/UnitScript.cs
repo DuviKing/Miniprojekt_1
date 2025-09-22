@@ -5,6 +5,7 @@ public class UnitScript : MonoBehaviour
     public int health;
     public int damage;
     public int moveRange = 1; // how far this unit can move
+    public int attackRange = 1; // how far this unit can attack
     public Tile currentTile;
     public int actionPoints;
     public int actionPointsMax;
@@ -26,10 +27,10 @@ public class UnitScript : MonoBehaviour
         if (currentTile != null)
         {
             currentTile.ClearUnit();
+            actionPoints = actionPoints - 1; // bruger en action point ved at flytte
         }
         currentTile = tile;
         Debug.Log($"Unit is on {tile.name}");
         transform.position = tile.transform.position; // snap to tile
-        actionPoints = actionPoints - 1; // bruger en action point ved at flytte
     }
 }
