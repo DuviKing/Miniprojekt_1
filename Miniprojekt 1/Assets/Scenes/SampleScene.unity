@@ -368,12 +368,10 @@ MonoBehaviour:
   knightPrefabTeam1: {fileID: 1528433401265327271, guid: 1f6bc0ebd92b30a4c86f0e871dd22795, type: 3}
   shieldKnightPrefabTeam1: {fileID: -6579455606428829007, guid: ee1589f1df29f694790d2daeb8acf39a, type: 3}
   cavalryPrefabTeam1: {fileID: -2638144588898876323, guid: 98c8060f224747141bd6902f4db64ddb, type: 3}
-  archerPrefabTeam1: {fileID: 0}
   squirePrefabTeam2: {fileID: -5461875262008283517, guid: 34b0d12e4dd3a0c43a6d9dddec5e0801, type: 3}
   knightPrefabTeam2: {fileID: -1469990233246567635, guid: 78c750336fd5abc4db340a6862676070, type: 3}
   shieldKnightPrefabTeam2: {fileID: 3554383483820443092, guid: 4dd85ef90ac2f8b49b5e376ae99362f3, type: 3}
   cavalryPrefabTeam2: {fileID: -8957843184931840236, guid: 054c5fa78ae2cc641931ad5f71f6ccd6, type: 3}
-  archerPrefabTeam2: {fileID: 0}
   StatWindow: {fileID: 1018322072}
 --- !u!4 &121409502
 Transform:
