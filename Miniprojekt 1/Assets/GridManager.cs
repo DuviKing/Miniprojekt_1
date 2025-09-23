@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip turnSwitchSound;
     public Button next_turn_Button;
     private bool buttonClicked = false;
     public int turnNumber = 0;
@@ -87,6 +89,9 @@ public class GridManager : MonoBehaviour
             ClearHighlights();
             selectedUnit = null;
             AllUnitActionPointsReset();
+            // Play turn switch sound
+            if (turnSwitchSound != null)
+                LydEffektManger.instance.spilLyd(turnSwitchSound, transform, 1f);
         }
 
         if (Input.GetMouseButtonDown(0)) // left mouse click

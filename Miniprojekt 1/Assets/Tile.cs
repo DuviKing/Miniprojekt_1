@@ -49,13 +49,23 @@ public class Tile : MonoBehaviour
     {
         OccupiedUnit.health = OccupiedUnit.health - attackingUnit.damage;
         Debug.Log($"{OccupiedUnit.transform.position}, {attackingUnit.damage}");
+
         damageIndicatorManager.SpawnDamageText(OccupiedUnit.transform.position, attackingUnit.damage.ToString());
-        attackingUnit.actionPoints = 0; // sætter action points til 0 efter et angreb
+
+        // Set action points to 0 after attack
+        attackingUnit.actionPoints = 0;
+
         Debug.Log($"{OccupiedUnit.name} has {OccupiedUnit.health} health left");
+
         if (OccupiedUnit.health <= 0)
         {
+            OccupiedUnit.PlayDeathSound();
             Destroy(OccupiedUnit.gameObject);
             Debug.Log($"{OccupiedUnit}");
+        }
+        else
+        {
+            attackingUnit.PlayAttackSound();
         }
     }
 
@@ -82,3 +92,5 @@ public class Tile : MonoBehaviour
     }
     
 }
+
+

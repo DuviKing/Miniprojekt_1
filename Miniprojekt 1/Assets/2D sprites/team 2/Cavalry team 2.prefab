@@ -144,6 +144,10 @@ MonoBehaviour:
   actionPoints: 4
   actionPointsMax: 4
   unitTeam1: 0
+  attackSounds:
+  - {fileID: 8300000, guid: ec2749bf1e8d26e40a49ce9451a232d9, type: 3}
+  - {fileID: 8300000, guid: 6f64dab463563a041b7a0b4b7dec3e2f, type: 3}
+  - {fileID: 8300000, guid: dc037090156756f47b005d3ecd7e7f1e, type: 3}
 --- !u!1 &6587819027541638719
 GameObject:
   m_ObjectHideFlags: 0

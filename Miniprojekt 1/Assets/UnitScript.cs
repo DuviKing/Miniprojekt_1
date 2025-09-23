@@ -10,17 +10,14 @@ public class UnitScript : MonoBehaviour
     public int actionPoints;
     public int actionPointsMax;
     public bool unitTeam1; // true for team 1, false for team 2
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
 
-    }
+    [Header("Unit Sounds")]
+    [SerializeField] private AudioClip[] attackSounds;
+    public static AudioClip sharedPlacementSound;
+    public static AudioClip[] sharedDeathSounds;
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    void Start() { }
+    void Update() { }
 
     public void PlaceOnTile(Tile tile)
     {
@@ -32,5 +29,30 @@ public class UnitScript : MonoBehaviour
         currentTile = tile;
         Debug.Log($"Unit is on {tile.name}");
         transform.position = tile.transform.position; // snap to tile
+        // Play shared placement sound
+        if (sharedPlacementSound != null)
+            LydEffektManger.instance.spilLyd(sharedPlacementSound, transform, 1f);
+    }
+
+    public void PlayAttackSound()
+    {
+        if (attackSounds != null && attackSounds.Length > 0)
+            LydEffektManger.instance.spilrandomLyd(attackSounds, transform, 1f);
+    }
+
+    public void PlayDeathSound()
+    {
+        if (sharedDeathSounds != null && sharedDeathSounds.Length > 0)
+            LydEffektManger.instance.spilrandomLyd(sharedDeathSounds, transform, 1f);
+    }
+
+    public void TakeDamage()
+    {
+        //health -= amount;
+        if (health <= 0)
+        {
+            PlayDeathSound();
+           // Destroy(gameObject);
+        }
     }
 }
