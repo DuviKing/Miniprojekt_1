@@ -54,6 +54,7 @@ public class GridManager : MonoBehaviour
                 if (clickedTile != null)
                 {
                     HandleMoveTileClick(clickedTile); //Movement logic
+                    StatWindow.StatWindowText(clickedTile.OccupiedUnit);
                 }
             }
         }
@@ -142,7 +143,6 @@ public class GridManager : MonoBehaviour
             if (tile.OccupiedUnit.unitTeam1 == turnTeam1 && tile.OccupiedUnit.actionPoints > 0) // tjekker om den valgte unit tilhører det hold, der har tur, og om den har action points tilbage
             {
                 selectedUnit = tile.OccupiedUnit;
-                StatWindow.StatWindowText(selectedUnit);
                 HighlightTilesInRange(GetTileGridPosition(selectedUnit.currentTile), selectedUnit.moveRange);
             }
             else
@@ -171,7 +171,7 @@ public class GridManager : MonoBehaviour
     {
         if (selectedUnit != null && tile.activeHighlight && tile.OccupiedUnit != null)
         {
-            if (selectedUnit.actionPoints > 0)
+            if (selectedUnit.actionPoints > 0 && selectedUnit.unitTeam1 != tile.OccupiedUnit.unitTeam1)
             {
                 tile.InitiateCombat(selectedUnit);
                 selectedUnit = null;
@@ -179,7 +179,7 @@ public class GridManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Selected unit has no action points left to attack.");
+                Debug.Log("Selected unit has no action points left to attack or is not attacking an enemy.");
             }
         }
     }
