@@ -15,10 +15,13 @@ public class Tile : MonoBehaviour
     public DamageIndicatorManager damageIndicatorManager; // reference to the damage indicator manager
     public bool tileIsMountain = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [System.Obsolete]
+    void Awake()
     {
-
+        if (damageIndicatorManager == null)
+        {
+            damageIndicatorManager = FindObjectOfType<DamageIndicatorManager>();
+        }
     }
 
     // Update is called once per frame
@@ -46,7 +49,7 @@ public class Tile : MonoBehaviour
     {
         OccupiedUnit.health = OccupiedUnit.health - attackingUnit.damage;
         Debug.Log($"{OccupiedUnit.transform.position}, {attackingUnit.damage}");
-        //damageIndicatorManager.SpawnDamageText(OccupiedUnit.transform.position, attackingUnit.damage.ToString());
+        damageIndicatorManager.SpawnDamageText(OccupiedUnit.transform.position, attackingUnit.damage.ToString());
         attackingUnit.actionPoints = 0; // sætter action points til 0 efter et angreb
         Debug.Log($"{OccupiedUnit.name} has {OccupiedUnit.health} health left");
         if (OccupiedUnit.health <= 0)
