@@ -1,5 +1,5 @@
 using UnityEngine;
-
+// LydEffektManager.instance.spilLyd(lydklip, spawnposition, volum)
 public class LydEffektManger : MonoBehaviour
 {
     public static LydEffektManger instance;
