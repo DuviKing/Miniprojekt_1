@@ -6,10 +6,13 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color baseColor, offsetColor, selectedColor;
     [SerializeField] private SpriteRenderer tileSprite;
     [SerializeField] private GameObject highlight;
-    public bool activeHighlight = false;
+    [SerializeField] private Color highlightColor, attackHighlightColor;
+    [SerializeField] private SpriteRenderer highlightSpriteRenderer;
+    public bool activeMoveHighlight = false;
+    public bool activeAttackHighlight = false;
     public UnitScript OccupiedUnit { get; private set; }
     public DamageIndicatorManager damageIndicatorManager; // reference to the damage indicator manager
-    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -53,12 +56,19 @@ public class Tile : MonoBehaviour
 
     public void Select()
     {
-        activeHighlight = true;
-        highlight.SetActive(activeHighlight);
+        highlightSpriteRenderer.color = highlightColor;
+        activeMoveHighlight = true;
+        highlight.SetActive(activeMoveHighlight);
     }
     public void Deselect()
     {
-        activeHighlight = false;
-        highlight.SetActive(activeHighlight);
+        activeMoveHighlight = false;
+        highlight.SetActive(activeMoveHighlight);
+    }
+    public void AttackSelect()
+    {
+        highlightSpriteRenderer.color = attackHighlightColor;
+        activeAttackHighlight = true;
+        highlight.SetActive(activeAttackHighlight);
     }
 }

@@ -110,7 +110,12 @@ MonoBehaviour:
   selectedColor: {r: 0.17647056, g: 0.78431374, b: 0.19256231, a: 0}
   tileSprite: {fileID: 780744042799691463}
   highlight: {fileID: 7610226106284143265}
-  activeHighlight: 0
+  highlightColor: {r: 1, g: 1, b: 1, a: 0.3137255}
+  attackHighlightColor: {r: 1, g: 0.34905648, b: 0.34905648, a: 0.3137255}
+  highlightSpriteRenderer: {fileID: 606354630129943605}
+  activeMoveHighlight: 0
+  activeAttackHighlight: 0
+  damageIndicatorManager: {fileID: 0}
 --- !u!60 &6928448709491072703
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -248,7 +253,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -4699882623797373214, guid: 96559614624af7948bf248ea44820b5e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.30980393}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.3137255}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
