@@ -73,6 +73,9 @@ public class Tile : MonoBehaviour
         activeAttackHighlight = true;
         highlight.SetActive(activeAttackHighlight);
     }
-
+    public void SetAsMountain()
+    {
+        tileIsMountain = true;
+    }
     
 }
