@@ -1,5 +1,6 @@
 using UnityEngine;
-
+// LydEffektManager.instance.spilLyd(lydklip, spawnposition, volum)
+// husk at lyd skal være angivt som "[serializeField] private AudioClip lydklip_variable_navn;", så kan man drag and droppe lydfilen i inspector.
 public class LydEffektManger : MonoBehaviour
 {
     public static LydEffektManger instance;
@@ -30,7 +31,7 @@ public class LydEffektManger : MonoBehaviour
     }
     public void spilrandomLyd(AudioClip[] audioClip, Transform spawnTransform, float volum)
     {
-        int randomIndex = Random.Range(0, audioClip.Length); 
+        int randomIndex = Random.Range(0, audioClip.Length);
         AudioSource audioSource = Instantiate(lydKildePrefab, spawnTransform.position, Quaternion.identity);
 
         audioSource.clip = audioClip[randomIndex];
@@ -38,5 +39,5 @@ public class LydEffektManger : MonoBehaviour
         audioSource.Play();
         float clipLength = audioSource.clip.length;
         Destroy(audioSource.gameObject, clipLength);
-    }    
+    }
 }

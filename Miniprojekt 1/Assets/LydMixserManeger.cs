@@ -11,14 +11,14 @@ public class LydMixserManeger : MonoBehaviour
 
     public void setmasterVolum(float volum)
     {
-        lydMixser.SetFloat("MasterVolume", volum);
+        lydMixser.SetFloat("MasterVolume", mathf.Log10(volum) * 20);
     }
     public void setmusikkVolum(float volum)
     {
-        lydMixser.SetFloat("music volume", volum);
+        lydMixser.SetFloat("music volume", mathf.Log10(volum) * 20);
     }
     public void seteffektVolum(float volum)
     {
-        lydMixser.SetFloat("LydeffektVolume", volum);
+        lydMixser.SetFloat("LydeffektVolume", mathf.Log10(volum) * 20);
     }
 }
