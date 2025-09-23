@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
+    public Button next_turn_Button;
+    private bool buttonClicked = false;
+
     private float hexYOffsetMultiplier = 0.25f;
     [SerializeField] private int gridSizeRadius;
     [SerializeField] private Tile tilePrefab;
@@ -51,16 +55,24 @@ public class GridManager : MonoBehaviour
     };
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         GenerateGrid();
+
+        next_turn_Button.onClick.AddListener(() =>
+        {
+            buttonClicked = true;
+        });
+                
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) // skifter tur
+        if (Input.GetKeyDown(KeyCode.Space) || buttonClicked) // skifter tur
         {
+            buttonClicked = false;
             turnTeam1 = !turnTeam1;
             Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
             ClearHighlights();
