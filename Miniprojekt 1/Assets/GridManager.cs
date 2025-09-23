@@ -14,12 +14,13 @@ public class GridManager : MonoBehaviour
     [SerializeField] private UnitScript knightPrefabTeam1;
     [SerializeField] private UnitScript shieldKnightPrefabTeam1;
     [SerializeField] private UnitScript cavalryPrefabTeam1;
+    [SerializeField] private UnitScript archerPrefabTeam1;
     [SerializeField] private UnitScript squirePrefabTeam2;
     [SerializeField] private UnitScript knightPrefabTeam2;
     [SerializeField] private UnitScript shieldKnightPrefabTeam2;
     [SerializeField] private UnitScript cavalryPrefabTeam2;
+    [SerializeField] private UnitScript archerPrefabTeam2;
     [SerializeField] private StatWindow StatWindow;
-    private Tile selectedTile;
     private UnitScript selectedUnit;
     private Dictionary<Vector2, Tile> mapTiles;
     private bool turnTeam1 = true; // true = team 1's turn, false = team 2's turn
@@ -28,7 +29,6 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid();
-        
     }
 
     // Update is called once per frame
@@ -54,7 +54,10 @@ public class GridManager : MonoBehaviour
                 if (clickedTile != null)
                 {
                     HandleMoveTileClick(clickedTile); //Movement logic
-                    StatWindow.StatWindowText(clickedTile.OccupiedUnit);
+                    if (clickedTile.OccupiedUnit != null)
+                    {
+                        StatWindow.StatWindowText(clickedTile.OccupiedUnit);
+                    }
                 }
             }
         }
@@ -74,20 +77,9 @@ public class GridManager : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.A)) // 'A'-knap spawner en unit på feltet med musen over
-            {
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
-                if (hit.collider != null)
-                {
-                    Tile clickedTile = hit.collider.GetComponent<Tile>();
-                    if (clickedTile != null)
-                    {
-                        var spawnedUnit = Instantiate(unitPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                        clickedTile.PlaceUnit(spawnedUnit);
-                    }
-                }
-            }
+        {
+            UnitSpawn(unitPrefab);
+        }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -117,6 +109,13 @@ public class GridManager : MonoBehaviour
             else
                 UnitSpawn(cavalryPrefabTeam2);
         }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            if (turnTeam1)
+                UnitSpawn(archerPrefabTeam1);
+            else
+                UnitSpawn(archerPrefabTeam2);
+        }
     }
 
     private void UnitSpawn(UnitScript unitType)
@@ -127,10 +126,14 @@ public class GridManager : MonoBehaviour
         if (hit.collider != null)
         {
             Tile clickedTile = hit.collider.GetComponent<Tile>();
-            if (clickedTile != null)
+            if (clickedTile != null && clickedTile.OccupiedUnit == null)
             {
                 var spawnedUnit = Instantiate(unitType, new Vector3(0, 0, 0), Quaternion.identity);
                 clickedTile.PlaceUnit(spawnedUnit);
+            }
+            else
+            {
+                Debug.Log("Cannot spawn unit: Tile is already occupied.");
             }
         }
     }
@@ -143,7 +146,7 @@ public class GridManager : MonoBehaviour
             if (tile.OccupiedUnit.unitTeam1 == turnTeam1 && tile.OccupiedUnit.actionPoints > 0) // tjekker om den valgte unit tilhører det hold, der har tur, og om den har action points tilbage
             {
                 selectedUnit = tile.OccupiedUnit;
-                HighlightTilesInRange(GetTileGridPosition(selectedUnit.currentTile), selectedUnit.moveRange);
+                HighlightTilesInUnitRange(GetTileGridPosition(selectedUnit.currentTile), selectedUnit.moveRange, selectedUnit.attackRange);
             }
             else
             {
@@ -152,7 +155,7 @@ public class GridManager : MonoBehaviour
         }
 
         // Case 2: Selecting a destination within range
-        if (selectedUnit != null && tile.activeHighlight && tile.OccupiedUnit == null)
+        if (selectedUnit != null && tile.activeMoveHighlight && tile.OccupiedUnit == null)
         {
             MoveUnitToTile(selectedUnit, tile);
             ClearHighlights();
@@ -160,20 +163,37 @@ public class GridManager : MonoBehaviour
         }
 
         //Case 3: Selecting a destination outside range
-        if (selectedUnit != null && tile.activeHighlight == false && tile.OccupiedUnit == null)
+        if (selectedUnit != null && tile.activeMoveHighlight == false && tile.OccupiedUnit == null)
         {
             ClearHighlights();
             selectedUnit = null;
+        }
+
+        //Case 4: Selecting another unit of the same team
+        if (selectedUnit != null && tile.OccupiedUnit != null && tile.OccupiedUnit.unitTeam1 == selectedUnit.unitTeam1)
+        {
+            ClearHighlights();
+            selectedUnit = null;
+            if (tile.OccupiedUnit.actionPoints > 0) // tjekker om den valgte unit tilhører det hold, der har tur, og om den har action points tilbage
+            {
+                selectedUnit = tile.OccupiedUnit;
+                HighlightTilesInUnitRange(GetTileGridPosition(selectedUnit.currentTile), selectedUnit.moveRange, selectedUnit.attackRange);
+            }
+            else
+            {
+                Debug.Log("Selected unit does not belong to the current team or has no action points left.");
+            }
         }
     }
 
     private void HandleAttackTileClick(Tile tile)
     {
-        if (selectedUnit != null && tile.activeHighlight && tile.OccupiedUnit != null)
+        if (selectedUnit != null && tile.activeAttackHighlight && tile.OccupiedUnit != null)
         {
             if (selectedUnit.actionPoints > 0 && selectedUnit.unitTeam1 != tile.OccupiedUnit.unitTeam1)
             {
                 tile.InitiateCombat(selectedUnit);
+                StatWindow.StatWindowText(selectedUnit);
                 selectedUnit = null;
                 ClearHighlights();
             }
@@ -244,7 +264,7 @@ public class GridManager : MonoBehaviour
         return Vector2.zero;
     }
 
-    public void HighlightTilesInRange(Vector2 center, int range)
+    private void HighlightTilesInUnitRange(Vector2 center, int moveRange, int attackRange)
     {
         foreach (var kvp in mapTiles)
         {
@@ -254,13 +274,13 @@ public class GridManager : MonoBehaviour
             // Hex distance formula (approx for your offset coords)
             float distance = Vector2.Distance(center, tilePos);
 
-            if (distance <= range)
+            if (distance <= moveRange && tile.OccupiedUnit == null) // only highlight if tile is unoccupied
             {
                 tile.Select();
             }
-            else
+            if (distance <= attackRange && tile.OccupiedUnit != null && tile.OccupiedUnit.unitTeam1 != selectedUnit.unitTeam1) // only highlight if tile is occupied by an enemy unit
             {
-                tile.Deselect();
+                tile.AttackSelect();
             }
         }
     }
