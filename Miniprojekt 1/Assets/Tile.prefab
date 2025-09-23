@@ -116,6 +116,7 @@ MonoBehaviour:
   activeMoveHighlight: 0
   activeAttackHighlight: 0
   damageIndicatorManager: {fileID: 0}
+  tileIsMountain: 0
 --- !u!60 &6928448709491072703
 PolygonCollider2D:
   m_ObjectHideFlags: 0

@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 536163265}
   - component: {fileID: 536163264}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: team_Win_Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 788004071}
   - component: {fileID: 788004070}
   m_Layer: 5
-  m_Name: Image
+  m_Name: bgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -872,7 +872,7 @@ GameObject:
   - component: {fileID: 1797357044}
   - component: {fileID: 1797357043}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Glorious Victory_Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
