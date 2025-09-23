@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -12,6 +13,7 @@ public class Tile : MonoBehaviour
     public bool activeAttackHighlight = false;
     public UnitScript OccupiedUnit { get; private set; }
     public DamageIndicatorManager damageIndicatorManager; // reference to the damage indicator manager
+    public bool tileIsMountain = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -71,4 +73,6 @@ public class Tile : MonoBehaviour
         activeAttackHighlight = true;
         highlight.SetActive(activeAttackHighlight);
     }
+
+    
 }

@@ -274,7 +274,7 @@ public class GridManager : MonoBehaviour
             // Hex distance formula (approx for your offset coords)
             float distance = Vector2.Distance(center, tilePos);
 
-            if (distance <= moveRange && tile.OccupiedUnit == null) // only highlight if tile is unoccupied
+            if (distance <= moveRange && tile.OccupiedUnit == null && tile.tileIsMountain == false) // only highlight if tile is unoccupied and not a mountain
             {
                 tile.Select();
             }

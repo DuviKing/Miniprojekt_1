@@ -106,4 +106,8 @@ MonoBehaviour:
   health: 160
   damage: 80
   moveRange: 1
+  attackRange: 1
   currentTile: {fileID: 0}
+  actionPoints: 2
+  actionPointsMax: 2
+  unitTeam1: 1
