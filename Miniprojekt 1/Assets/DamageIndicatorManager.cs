@@ -5,19 +5,30 @@ public class DamageIndicatorManager : MonoBehaviour
 {
     void Start()
     {
-        SpawnDamageText(new Vector3(-5f, 1.5f, 0), "10");
+        
     }
     public GameObject damageTextPrefab; // Assign your prefab in the inspector
 
-    public void SpawnDamageText(Vector3 position, string text)
+    public void SpawnDamageText(Vector3 worldPosition, string text)
     {
-    var canvas = GameObject.Find("UI Canvas");
-    var damageText = Instantiate(damageTextPrefab, canvas.transform);
-    damageText.GetComponent<TextMeshProUGUI>().text = text;
-    // Set anchoredPosition for UI placement
-    var rectTransform = damageText.GetComponent<RectTransform>();
-    rectTransform.anchoredPosition = new Vector2(position.x, position.y);
-    StartCoroutine(MoveAndDestroy(damageText));
+        var canvas = GameObject.Find("UI Canvas");
+        var damageText = Instantiate(damageTextPrefab, canvas.transform);
+        damageText.GetComponent<TextMeshProUGUI>().text = text;
+
+        // Convert world position to screen position
+        Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPosition);
+
+        // Convert screen position to canvas local position
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.GetComponent<RectTransform>(),
+            screenPoint,
+            canvas.GetComponent<Canvas>().worldCamera,
+            out Vector2 localPoint);
+
+        var rectTransform = damageText.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = localPoint;
+
+        StartCoroutine(MoveAndDestroy(damageText));
     }
 
     private System.Collections.IEnumerator MoveAndDestroy(GameObject obj)
