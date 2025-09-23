@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,6 +10,9 @@ public class GridManager : MonoBehaviour
 {
     public Button next_turn_Button;
     private bool buttonClicked = false;
+    public int turnNumber = 0;
+    public TMP_Text counterText;
+    public TMP_Text teamText;
 
     private float hexYOffsetMultiplier = 0.25f;
     [SerializeField] private int gridSizeRadius;
@@ -64,7 +68,7 @@ public class GridManager : MonoBehaviour
         {
             buttonClicked = true;
         });
-                
+
     }
 
     // Update is called once per frame
@@ -73,6 +77,11 @@ public class GridManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) || buttonClicked) // skifter tur
         {
             buttonClicked = false;
+
+            turnNumber = turnNumber + 1;
+            counterText.text = turnNumber.ToString();
+            teamText.text = (((turnNumber + 1) % 2 == 0) ? "2" : "1");
+
             turnTeam1 = !turnTeam1;
             Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
             ClearHighlights();
