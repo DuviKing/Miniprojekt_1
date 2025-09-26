@@ -12,13 +12,23 @@ public class load_scenes : MonoBehaviour
     // Loads scene 2 (Title Screen)
     public void LoadTitleScreen()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(0);
     }
 
     // Loads scene 0 (Battle Scene)
     public void LoadBattleScene()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
+    }
+
+    // Quits the game
+    public void QuitGame()
+    {
+        Application.Quit();
+        // For editor testing
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
