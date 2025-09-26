@@ -1,6 +1,8 @@
+using Unity.AppUI.UI;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tile : MonoBehaviour
 {
@@ -15,6 +17,23 @@ public class Tile : MonoBehaviour
     public DamageIndicatorManager damageIndicatorManager; // reference to the damage indicator manager
     public bool tileIsMountain = false;
 
+    private Slider hpBar;
+
+    void Start()
+    {
+        // Look for the GameObject named "hp_bar"
+        GameObject hpBarObject = GameObject.Find("hp_bar");
+        if (hpBarObject != null)
+        {
+            hpBar = hpBarObject.GetComponent<Slider>();
+            hpBar.value = 0.5f;
+        }
+        else
+        {
+            Debug.LogError("Could not find 'hp_bar'!");
+        }
+    }
+
     [System.Obsolete]
     void Awake()
     {
@@ -27,7 +46,12 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (hpBar != null && OccupiedUnit != null) // assuming OccupiedUnit is accessible
+        {
+            // Calculate ratio: currentHealth / maxHealth
+            float ratio = OccupiedUnit.health / 100f;
+            hpBar.value = Mathf.Clamp01(ratio); // keeps it between 0 and 1
+        }
     }
     public void Init(bool isOffset)
     {
@@ -52,10 +76,12 @@ public class Tile : MonoBehaviour
 
         damageIndicatorManager.SpawnDamageText(OccupiedUnit.transform.position, attackingUnit.damage.ToString());
 
+        
         // Set action points to 0 after attack
         attackingUnit.actionPoints = 0;
 
         Debug.Log($"{OccupiedUnit.name} has {OccupiedUnit.health} health left");
+
 
         if (OccupiedUnit.health <= 0)
         {

@@ -6371,7 +6371,7 @@ GameObject:
   - component: {fileID: 2074605974}
   - component: {fileID: 2074605975}
   m_Layer: 0
-  m_Name: hp bar
+  m_Name: hp_bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
