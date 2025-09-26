@@ -15,6 +15,10 @@ public class GridManager : MonoBehaviour
     public int turnNumber = 0;
     public TMP_Text counterText;
     public TMP_Text teamText;
+    private int requiredpointsT1 = 0;
+    public int acquiredpointsT1 = 0;
+    private int requiredpointsT2 = 0;
+    public int acquiredpointsT2 = 0;
 
     private float hexYOffsetMultiplier = 0.25f;
     [SerializeField] private int gridSizeRadius;
@@ -83,6 +87,7 @@ public class GridManager : MonoBehaviour
             turnNumber = turnNumber + 1;
             counterText.text = turnNumber.ToString();
             teamText.text = (((turnNumber + 1) % 2 == 0) ? "2" : "1");
+
 
             turnTeam1 = !turnTeam1;
             Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
@@ -181,6 +186,14 @@ public class GridManager : MonoBehaviour
             {
                 var spawnedUnit = Instantiate(unitType, new Vector3(0, 0, 0), Quaternion.identity);
                 clickedTile.PlaceUnit(spawnedUnit);
+                if (turnTeam1)
+                {
+                    requiredpointsT1 = requiredpointsT1 + 1;
+                }
+                else
+                {
+                    requiredpointsT2 = requiredpointsT2 + 1;
+                }
             }
             else
             {

@@ -62,6 +62,7 @@ public class Tile : MonoBehaviour
             OccupiedUnit.PlayDeathSound();
             Destroy(OccupiedUnit.gameObject);
             Debug.Log($"{OccupiedUnit}");
+            
         }
         else
         {
