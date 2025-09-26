@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Collections;
@@ -65,6 +66,8 @@ public class GridManager : MonoBehaviour
         new Vector2Int(4, 2),
     };
 
+    private Coroutine bgFadeCoroutine;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Start()
@@ -90,11 +93,13 @@ public class GridManager : MonoBehaviour
             teamText.text = (((turnNumber + 1) % 2 == 0) ? "2" : "1");
             if (teamText.text == "1")
             {
-                world_bg.color = Color.cornflowerBlue;
+                //world_bg.color = Color.cornflowerBlue;
+                FadeWorldBg(Color.cornflowerBlue, 0.5f);
             }
             else if (teamText.text == "2")
             {
-                world_bg.color = Color.softRed;
+                //world_bg.color = Color.indianRed;
+                FadeWorldBg(Color.indianRed, 0.5f);
             }
 
                 turnTeam1 = !turnTeam1;
@@ -368,5 +373,26 @@ public class GridManager : MonoBehaviour
         {
             kvp.Value.Deselect();
         }
+    }
+
+    // Call this to fade the background color
+    private void FadeWorldBg(Color targetColor, float duration = 0.5f)
+    {
+        if (bgFadeCoroutine != null)
+            StopCoroutine(bgFadeCoroutine);
+        bgFadeCoroutine = StartCoroutine(FadeBgCoroutine(targetColor, duration));
+    }
+
+    private IEnumerator FadeBgCoroutine(Color targetColor, float duration)
+    {
+        Color startColor = world_bg.color;
+        float time = 0f;
+        while (time < duration)
+        {
+            world_bg.color = Color.Lerp(startColor, targetColor, time / duration);
+            time += Time.deltaTime;
+            yield return null;  // yields until next frame
+        }
+        world_bg.color = targetColor;
     }
 }
