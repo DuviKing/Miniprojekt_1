@@ -235,5 +235,4 @@ MonoBehaviour:
   actionPointsMax: 2
   unitTeam1: 1
   attackSounds:
-  - {fileID: 0}
-  deathSound: {fileID: 0}
+  - {fileID: 8300000, guid: 4b20bff8e92ef82458238bd8d720ca65, type: 3}
