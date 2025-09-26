@@ -15,6 +15,7 @@ public class GridManager : MonoBehaviour
     public int turnNumber = 0;
     public TMP_Text counterText;
     public TMP_Text teamText;
+    public Image world_bg;
     private int requiredpointsT1 = 0;
     public int acquiredpointsT1 = 0;
     private int requiredpointsT2 = 0;
@@ -74,7 +75,7 @@ public class GridManager : MonoBehaviour
         {
             buttonClicked = true;
         });
-
+        world_bg.color = Color.cornflowerBlue;
     }
 
     // Update is called once per frame
@@ -87,9 +88,16 @@ public class GridManager : MonoBehaviour
             turnNumber = turnNumber + 1;
             counterText.text = turnNumber.ToString();
             teamText.text = (((turnNumber + 1) % 2 == 0) ? "2" : "1");
+            if (teamText.text == "1")
+            {
+                world_bg.color = Color.cornflowerBlue;
+            }
+            else if (teamText.text == "2")
+            {
+                world_bg.color = Color.softRed;
+            }
 
-
-            turnTeam1 = !turnTeam1;
+                turnTeam1 = !turnTeam1;
             Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
             ClearHighlights();
             selectedUnit = null;
