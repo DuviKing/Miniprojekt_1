@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour
     public DamageIndicatorManager damageIndicatorManager; // reference to the damage indicator manager
     public StatWindow StatWindow; // reference to the stat window
     public bool tileIsMountain = false;
+    public bool unitDeath = false;
 
     [System.Obsolete]
     void Awake()
@@ -72,7 +73,8 @@ public class Tile : MonoBehaviour
             Destroy(OccupiedUnit.gameObject);
             OccupiedUnit.PlayDeathSound();
             Debug.Log($"{OccupiedUnit}");
-            
+            ClearUnit();
+            unitDeath = true;
         }
         else
         {

@@ -66,6 +66,7 @@ public class GridManager : MonoBehaviour
     };
 
     private Coroutine bgFadeCoroutine;
+    public load_scenes load_scenes;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -97,31 +98,31 @@ public class GridManager : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Space) || buttonClicked) // skifter tur
+        {
+            buttonClicked = false;
+            turnTeam1 = !turnTeam1;
+            turnNumber = turnNumber + 1;
+            counterText.text = turnNumber.ToString();
+            teamText.text = turnTeam1 ? "1" : "2";
+            if (turnTeam1)
             {
-                buttonClicked = false;
-                turnTeam1 = !turnTeam1;
-                turnNumber = turnNumber + 1;
-                counterText.text = turnNumber.ToString();
-                teamText.text = turnTeam1 ? "1" : "2";
-                if (turnTeam1)
-                {
-                    //Switch background color to team 1 color
-                    FadeWorldBg(Color.cornflowerBlue, 0.5f);
-                }
-                else
-                {
-                    //Switch background color to team 2 color
-                    FadeWorldBg(Color.indianRed, 0.5f);
-                }
-
-                Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
-                ClearHighlights();
-                selectedUnit = null;
-                AllUnitActionPointsReset();
-                // Play turn switch sound
-                if (turnSwitchSound != null)
-                    LydEffektManger.instance.spilLyd(turnSwitchSound, transform, 1f);
+                //Switch background color to team 1 color
+                FadeWorldBg(Color.cornflowerBlue, 0.5f);
             }
+            else
+            {
+                //Switch background color to team 2 color
+                FadeWorldBg(Color.indianRed, 0.5f);
+            }
+
+            Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
+            ClearHighlights();
+            selectedUnit = null;
+            AllUnitActionPointsReset();
+            // Play turn switch sound
+            if (turnSwitchSound != null)
+                LydEffektManger.instance.spilLyd(turnSwitchSound, transform, 1f);
+        }
 
         if (Input.GetMouseButtonDown(0)) // left mouse click
         {
@@ -272,6 +273,25 @@ public class GridManager : MonoBehaviour
                 tile.InitiateCombat(selectedUnit);
                 selectedUnit = null;
                 ClearHighlights();
+                if (tile.unitDeath)
+                {
+                    Debug.Log("A unit has been defeated.");
+                    tile.unitDeath = false; // reset the flag
+                    foreach (var kvp in mapTiles) // Check if any units of the defeated team remain
+                    {
+                        Tile loopTile = kvp.Value;
+                        if (loopTile.OccupiedUnit != null && loopTile.OccupiedUnit.unitTeam1 != turnTeam1)
+                        {
+                            Debug.Log("The defeated team still has units remaining.");
+                            Debug.Log($"{loopTile.OccupiedUnit.name}; Team: {loopTile.OccupiedUnit.unitTeam1}; Health: {loopTile.OccupiedUnit.health}");
+                            return; // If there's still a unit of that team, exit the method
+                        }
+                    }
+                    // If no units of the defeated team are found, the current team wins
+                    Debug.Log($"Team {(turnTeam1 ? 1 : 2)} has won!");
+                    GameData.turnTeam1 = turnTeam1;
+                    load_scenes.LoadEndScreen();
+                }
             }
             else
             {

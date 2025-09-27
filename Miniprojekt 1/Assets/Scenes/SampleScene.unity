@@ -381,6 +381,7 @@ MonoBehaviour:
   cavalryPrefabTeam2: {fileID: -8957843184931840236, guid: 054c5fa78ae2cc641931ad5f71f6ccd6, type: 3}
   archerPrefabTeam2: {fileID: 8750899363001854529, guid: ccd489b22cd73e24aba7c0e96a056239, type: 3}
   StatWindow: {fileID: 1018322072}
+  load_scenes: {fileID: 806716298}
 --- !u!4 &121409502
 Transform:
   m_ObjectHideFlags: 0
@@ -2147,6 +2148,50 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 493.5, y: 215.79498, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &806716297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 806716299}
+  - component: {fileID: 806716298}
+  m_Layer: 0
+  m_Name: LoadScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &806716298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806716297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac2d7348644ae9643946eb71cf8079f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::load_scenes
+--- !u!4 &806716299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806716297}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6417,3 +6462,4 @@ SceneRoots:
   - {fileID: 1998709270}
   - {fileID: 567678560}
   - {fileID: 1307955784}
+  - {fileID: 806716299}
