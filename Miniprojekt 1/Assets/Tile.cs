@@ -15,24 +15,8 @@ public class Tile : MonoBehaviour
     public bool activeAttackHighlight = false;
     public UnitScript OccupiedUnit { get; private set; }
     public DamageIndicatorManager damageIndicatorManager; // reference to the damage indicator manager
+    public StatWindow StatWindow; // reference to the stat window
     public bool tileIsMountain = false;
-
-    private Slider hpBar;
-
-    void Start()
-    {
-        // Look for the GameObject named "hp_bar"
-        GameObject hpBarObject = GameObject.Find("hp_bar");
-        if (hpBarObject != null)
-        {
-            hpBar = hpBarObject.GetComponent<Slider>();
-            hpBar.value = 0.5f;
-        }
-        else
-        {
-            Debug.LogError("Could not find 'hp_bar'!");
-        }
-    }
 
     [System.Obsolete]
     void Awake()
@@ -41,17 +25,16 @@ public class Tile : MonoBehaviour
         {
             damageIndicatorManager = FindObjectOfType<DamageIndicatorManager>();
         }
+        if (StatWindow == null)
+        {
+            StatWindow = FindObjectOfType<StatWindow>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hpBar != null && OccupiedUnit != null) // assuming OccupiedUnit is accessible
-        {
-            // Calculate ratio: currentHealth / maxHealth
-            float ratio = OccupiedUnit.health / 100f;
-            hpBar.value = Mathf.Clamp01(ratio); // keeps it between 0 and 1
-        }
+
     }
     public void Init(bool isOffset)
     {
@@ -85,8 +68,9 @@ public class Tile : MonoBehaviour
 
         if (OccupiedUnit.health <= 0)
         {
-            OccupiedUnit.PlayDeathSound();
+            StatWindow.StatWindowText(OccupiedUnit);
             Destroy(OccupiedUnit.gameObject);
+            OccupiedUnit.PlayDeathSound();
             Debug.Log($"{OccupiedUnit}");
             
         }

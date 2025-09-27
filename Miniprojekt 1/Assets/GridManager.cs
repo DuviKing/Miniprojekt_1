@@ -13,10 +13,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] private AudioClip turnSwitchSound;
     public Button next_turn_Button;
     private bool buttonClicked = false;
-    public int turnNumber = 0;
+    private int turnNumber = 0;
     public TMP_Text counterText;
     public TMP_Text teamText;
-    public Image world_bg;
     private int requiredpointsT1 = 0;
     public int acquiredpointsT1 = 0;
     private int requiredpointsT2 = 0;
@@ -78,63 +77,65 @@ public class GridManager : MonoBehaviour
         {
             buttonClicked = true;
         });
-        world_bg.color = Color.cornflowerBlue;
+        Camera.main.backgroundColor = Color.cornflowerBlue;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || buttonClicked) // skifter tur
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+        // Update stat window if hovering over a tile with a unit
+        if (hit.collider != null)
         {
-            buttonClicked = false;
-
-            turnNumber = turnNumber + 1;
-            counterText.text = turnNumber.ToString();
-            teamText.text = (((turnNumber + 1) % 2 == 0) ? "2" : "1");
-            if (teamText.text == "1")
+            Tile hoverTile = hit.collider.GetComponent<Tile>();
+            if (hoverTile != null && hoverTile.OccupiedUnit != null)
             {
-                //world_bg.color = Color.cornflowerBlue;
-                FadeWorldBg(Color.cornflowerBlue, 0.5f);
+                StatWindow.StatWindowText(hoverTile.OccupiedUnit);
             }
-            else if (teamText.text == "2")
-            {
-                //world_bg.color = Color.indianRed;
-                FadeWorldBg(Color.indianRed, 0.5f);
-            }
-
-                turnTeam1 = !turnTeam1;
-            Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
-            ClearHighlights();
-            selectedUnit = null;
-            AllUnitActionPointsReset();
-            // Play turn switch sound
-            if (turnSwitchSound != null)
-                LydEffektManger.instance.spilLyd(turnSwitchSound, transform, 1f);
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) || buttonClicked) // skifter tur
+            {
+                buttonClicked = false;
+                turnTeam1 = !turnTeam1;
+                turnNumber = turnNumber + 1;
+                counterText.text = turnNumber.ToString();
+                teamText.text = turnTeam1 ? "1" : "2";
+                if (turnTeam1)
+                {
+                    //Switch background color to team 1 color
+                    FadeWorldBg(Color.cornflowerBlue, 0.5f);
+                }
+                else
+                {
+                    //Switch background color to team 2 color
+                    FadeWorldBg(Color.indianRed, 0.5f);
+                }
+
+                Debug.Log(turnTeam1 ? "Team 1's turn" : "Team 2's turn");
+                ClearHighlights();
+                selectedUnit = null;
+                AllUnitActionPointsReset();
+                // Play turn switch sound
+                if (turnSwitchSound != null)
+                    LydEffektManger.instance.spilLyd(turnSwitchSound, transform, 1f);
+            }
 
         if (Input.GetMouseButtonDown(0)) // left mouse click
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
             if (hit.collider != null)
             {
                 Tile clickedTile = hit.collider.GetComponent<Tile>();
                 if (clickedTile != null)
                 {
                     HandleMoveTileClick(clickedTile); //Movement logic
-                    if (clickedTile.OccupiedUnit != null)
-                    {
-                        StatWindow.StatWindowText(clickedTile.OccupiedUnit);
-                    }
                 }
             }
         }
         if (Input.GetMouseButtonDown(1)) // right mouse click
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
             if (hit.collider != null)
             {
                 Tile clickedTile = hit.collider.GetComponent<Tile>();
@@ -186,7 +187,6 @@ public class GridManager : MonoBehaviour
                 UnitSpawn(archerPrefabTeam2);
         }
     }
-
     private void UnitSpawn(UnitScript unitType)
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -270,7 +270,6 @@ public class GridManager : MonoBehaviour
             if (selectedUnit.actionPoints > 0 && selectedUnit.unitTeam1 != tile.OccupiedUnit.unitTeam1)
             {
                 tile.InitiateCombat(selectedUnit);
-                StatWindow.StatWindowText(selectedUnit);
                 selectedUnit = null;
                 ClearHighlights();
             }
@@ -385,14 +384,16 @@ public class GridManager : MonoBehaviour
 
     private IEnumerator FadeBgCoroutine(Color targetColor, float duration)
     {
-        Color startColor = world_bg.color;
+        Color startColor = Camera.main.backgroundColor;
         float time = 0f;
         while (time < duration)
         {
-            world_bg.color = Color.Lerp(startColor, targetColor, time / duration);
+            Camera.main.backgroundColor = Color.Lerp(startColor, targetColor, time / duration);
             time += Time.deltaTime;
             yield return null;  // yields until next frame
         }
-        world_bg.color = targetColor;
+        Camera.main.backgroundColor = targetColor;
     }
+
+
 }

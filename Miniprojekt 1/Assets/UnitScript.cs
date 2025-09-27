@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class UnitScript : MonoBehaviour
 {
+    public int maxHealth;
     public int health;
     public int damage;
     public int moveRange = 1; // how far this unit can move
@@ -44,15 +45,5 @@ public class UnitScript : MonoBehaviour
     {
         if (sharedDeathSounds != null && sharedDeathSounds.Length > 0)
             LydEffektManger.instance.spilrandomLyd(sharedDeathSounds, transform, 1f);
-    }
-
-    public void TakeDamage()
-    {
-        //health -= amount;
-        if (health <= 0)
-        {
-            PlayDeathSound();
-           // Destroy(gameObject);
-        }
     }
 }

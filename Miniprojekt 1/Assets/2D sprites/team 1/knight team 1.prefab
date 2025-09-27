@@ -226,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c951c70122bbfc04a9bb1c5105b7a5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitScript
+  maxHealth: 300
   health: 300
   damage: 120
   moveRange: 1
@@ -238,4 +239,3 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ec2749bf1e8d26e40a49ce9451a232d9, type: 3}
   - {fileID: 8300000, guid: 6f64dab463563a041b7a0b4b7dec3e2f, type: 3}
   - {fileID: 8300000, guid: dc037090156756f47b005d3ecd7e7f1e, type: 3}
-  deathSound: {fileID: 0}
