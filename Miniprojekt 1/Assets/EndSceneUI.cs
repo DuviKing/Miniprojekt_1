@@ -8,9 +8,16 @@ public class EndSceneUI : MonoBehaviour
     void Start()
     {
         if (GameData.turnTeam1)
+        {
             teamWinText.text = "Team 1";
+            Camera.main.backgroundColor = Color.cornflowerBlue;
+        }
         else
+        {
             teamWinText.text = "Team 2";
+            Camera.main.backgroundColor = Color.indianRed;
+        }
+
     }
 
     // Update is called once per frame

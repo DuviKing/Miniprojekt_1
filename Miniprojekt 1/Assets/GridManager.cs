@@ -16,11 +16,6 @@ public class GridManager : MonoBehaviour
     private int turnNumber = 0;
     public TMP_Text counterText;
     public TMP_Text teamText;
-    private int requiredpointsT1 = 0;
-    public int acquiredpointsT1 = 0;
-    private int requiredpointsT2 = 0;
-    public int acquiredpointsT2 = 0;
-
     private float hexYOffsetMultiplier = 0.25f;
     [SerializeField] private int gridSizeRadius;
     [SerializeField] private Tile tilePrefab;
@@ -155,40 +150,40 @@ public class GridManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             if (turnTeam1)
-                UnitSpawn(squirePrefabTeam1);
+                UnitSpawn(squirePrefabTeam1, "Squire");
             else
-                UnitSpawn(squirePrefabTeam2);
+                UnitSpawn(squirePrefabTeam2, "Squire");
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             if (turnTeam1)
-                UnitSpawn(knightPrefabTeam1);
+                UnitSpawn(knightPrefabTeam1, "Knight");
             else
-                UnitSpawn(knightPrefabTeam2);
+                UnitSpawn(knightPrefabTeam2, "Knight");
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             if (turnTeam1)
-                UnitSpawn(shieldKnightPrefabTeam1);
+                UnitSpawn(shieldKnightPrefabTeam1, "Shield Knight");
             else
-                UnitSpawn(shieldKnightPrefabTeam2);
+                UnitSpawn(shieldKnightPrefabTeam2, "Shield Knight");
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             if (turnTeam1)
-                UnitSpawn(cavalryPrefabTeam1);
+                UnitSpawn(cavalryPrefabTeam1, "Cavalry");
             else
-                UnitSpawn(cavalryPrefabTeam2);
+                UnitSpawn(cavalryPrefabTeam2, "Cavalry");
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             if (turnTeam1)
-                UnitSpawn(archerPrefabTeam1);
+                UnitSpawn(archerPrefabTeam1, "Archer");
             else
-                UnitSpawn(archerPrefabTeam2);
+                UnitSpawn(archerPrefabTeam2, "Archer");
         }
     }
-    private void UnitSpawn(UnitScript unitType)
+    private void UnitSpawn(UnitScript unitType, string name = "Unit")
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
@@ -199,15 +194,8 @@ public class GridManager : MonoBehaviour
             if (clickedTile != null && clickedTile.OccupiedUnit == null)
             {
                 var spawnedUnit = Instantiate(unitType, new Vector3(0, 0, 0), Quaternion.identity);
+                spawnedUnit.name = name;
                 clickedTile.PlaceUnit(spawnedUnit);
-                if (turnTeam1)
-                {
-                    requiredpointsT1 = requiredpointsT1 + 1;
-                }
-                else
-                {
-                    requiredpointsT2 = requiredpointsT2 + 1;
-                }
             }
             else
             {
