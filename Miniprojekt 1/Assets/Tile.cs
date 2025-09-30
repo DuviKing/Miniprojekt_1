@@ -69,17 +69,21 @@ public class Tile : MonoBehaviour
 
         if (OccupiedUnit.health <= 0)
         {
+            UnitDeath();
+        }
+        else
+        {
+            attackingUnit.PlayAttackSound();
+        }
+    }
+    public void UnitDeath()
+    {
             StatWindow.StatWindowText(OccupiedUnit);
             Destroy(OccupiedUnit.gameObject);
             OccupiedUnit.PlayDeathSound();
             Debug.Log($"{OccupiedUnit}");
             ClearUnit();
             unitDeath = true;
-        }
-        else
-        {
-            attackingUnit.PlayAttackSound();
-        }
     }
 
     public void Select()

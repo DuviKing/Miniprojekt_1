@@ -182,6 +182,17 @@ public class GridManager : MonoBehaviour
             else
                 UnitSpawn(archerPrefabTeam2, "Archer");
         }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            if (hit.collider != null)
+            {
+                Tile clickedTile = hit.collider.GetComponent<Tile>();
+                if (clickedTile != null && clickedTile.OccupiedUnit != null)
+                {
+                    clickedTile.UnitDeath();
+                }
+            }
+        }
     }
     private void UnitSpawn(UnitScript unitType, string name = "Unit")
     {
