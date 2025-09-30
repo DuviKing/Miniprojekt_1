@@ -97,7 +97,7 @@ public class GridManager : MonoBehaviour
             buttonClicked = false;
             turnTeam1 = !turnTeam1;
             turnNumber = turnNumber + 1;
-            counterText.text = turnNumber.ToString();
+            counterText.text = (turnNumber + 1).ToString();
             teamText.text = turnTeam1 ? "1" : "2";
             if (turnTeam1)
             {
