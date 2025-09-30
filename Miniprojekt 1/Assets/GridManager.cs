@@ -191,7 +191,7 @@ public class GridManager : MonoBehaviour
         if (hit.collider != null)
         {
             Tile clickedTile = hit.collider.GetComponent<Tile>();
-            if (clickedTile != null && clickedTile.OccupiedUnit == null)
+            if (clickedTile != null && clickedTile.OccupiedUnit == null && clickedTile.tileIsMountain == false)
             {
                 var spawnedUnit = Instantiate(unitType, new Vector3(0, 0, 0), Quaternion.identity);
                 spawnedUnit.name = name;
@@ -199,7 +199,7 @@ public class GridManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Cannot spawn unit: Tile is already occupied.");
+                Debug.Log("Cannot spawn unit: Tile is already occupied or is a mountain.");
             }
         }
     }
