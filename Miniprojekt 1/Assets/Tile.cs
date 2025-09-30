@@ -78,12 +78,12 @@ public class Tile : MonoBehaviour
     }
     public void UnitDeath()
     {
-            StatWindow.StatWindowText(OccupiedUnit);
-            Destroy(OccupiedUnit.gameObject);
-            OccupiedUnit.PlayDeathSound();
-            Debug.Log($"{OccupiedUnit}");
-            ClearUnit();
-            unitDeath = true;
+        StatWindow.StatWindowText(OccupiedUnit);
+        Destroy(OccupiedUnit.gameObject);
+        OccupiedUnit.PlayDeathSound();
+        ClearUnit();
+        unitDeath = true;
+        Debug.Log($"{OccupiedUnit} has died.");
     }
 
     public void Select()
